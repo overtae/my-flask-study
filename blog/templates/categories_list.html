@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}This is Categories List.{% endblock %}
+
+{% block header %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url( {{ url_for('static', filename='assets/img/categories-bg.jpg') }} )">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>All Categories</h1>
+                    <span class="subheading">Blog categories...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-10">
+                <!-- Category item-->
+                <div class="post-preview">
+                    <a href="post_detail.html">
+                        <h2 class="post-title">Python</h2>
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4"/>
+                <!-- Category item-->
+                <div class="post-preview">
+                    <a href="post_detail.html">
+                        <h2 class="post-title">JavaScript</h2>
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4"/>
+                <!-- Category item-->
+                <div class="post-preview">
+                    <a href="post_detail.html">
+                        <h2 class="post-title">Swift</h2>
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4"/>
+                <!-- Category item-->
+                <div class="post-preview">
+                    <a href="post_detail.html">
+                        <h2 class="post-title">React</h2>
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4"/>
+            </div>
+        </div>
+    </div>
+{% endblock %}

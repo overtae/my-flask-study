@@ -7,7 +7,7 @@ views = Blueprint("views", __name__)
 
 @views.route("/")
 def home():
-    return render_template("home.html", name="홍길동", message="아버지를 아버지라 부르지 못하고...")
+    return render_template("index.html")
 
 
 @views.route("/about")

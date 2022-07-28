@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 
+from pprint import pprint
+
 # DB 설정하기
 db = SQLAlchemy()
 DB_NAME = "blog_db"
@@ -20,7 +22,7 @@ def create_app():
 
     from .views import views
     # blueprint 등록, '/blog' 를 기본으로 한다.
-    app.register_blueprint(views, url_prefix='/blog')
+    app.register_blueprint(views, url_prefix='/')
 
     from .auth import auth
     # blueprint 등록, '/auth' 를 기본으로 한다.
@@ -30,8 +32,9 @@ def create_app():
     from .models import User
     create_database(app)
 
-    login_manager = LoginManager() # LoginManager() 객체 생성
-    login_manager.login_view = "auth.login" # 만약 로그인이 필요한 곳에 로그인 하지 않은 유저가 접근한 경우, 로그인 페이지로 리다이렉트 되도록 해줌
+    login_manager = LoginManager()  # LoginManager() 객체 생성
+    # 만약 로그인이 필요한 곳에 로그인 하지 않은 유저가 접근한 경우, 로그인 페이지로 리다이렉트 되도록 해줌
+    login_manager.login_view = "auth.login"
 
     login_manager.init_app(app)
 
@@ -42,9 +45,6 @@ def create_app():
         return User.query.get(int(id))
 
     return app  # app 반환
-
-
-
 
 
 # DB 추가

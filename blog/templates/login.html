@@ -24,6 +24,7 @@
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="my-5">
                     <form id="contactForm" method="POST">
+                        {{ form.csrf_token }}
                         <div class="form-floating">
                             <input class="form-control" id="email" type="text" placeholder="Enter your email..." name="email"
                                     data-sb-validations="required"/>

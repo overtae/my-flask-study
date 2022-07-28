@@ -47,8 +47,23 @@
             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('views.about') }}">About</a></li>
             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('views.categories_list') }}">Categories</a></li>
             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('views.contact') }}">Contact</a></li>
-            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('auth.signup') }}">Sign Up</a></li>
-            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('auth.login') }}">Login</a></li>
+            
+            {% if user.is_authenticated %}
+            {# 유저가 로그인했다면 보일 것들 : "Welcome, username", "Logout" 이고, user 정보가 넘어가야 함. #}
+            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" style="color: red"
+                          href="#">welcome, {{ user.username }}!</a></li>
+            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" style="color: red"
+                          href="{{ url_for('auth.logout') }}">Logout</a></li>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            {# 그리고, 로그인한 상태가 아니라면... #}
+            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+                                    href="{{ url_for('auth.signup') }}">Sign Up</a></li>
+            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+                                    href="{{ url_for('auth.login') }}">Login</a></li>
+            {% endif %}
+            
           </ul>
         </div>
       </div>
@@ -57,6 +72,27 @@
     {# 변화하는 부분 #}
     {% block header %}{% endblock %}
     {# 변화하는 부분 #}
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {# 카테고리 == error 이라면, 실패 메시지를 출력 #}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissable fade show" role="alert" style="text-align: center">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {# 그렇지 않다면, 성공 메시지를 출력 #}
+            {% else %}
+                <div class="alert alert-success alert-dismissable fade show" role="alert" style="text-align: center">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     <div class="content-wrapper">{% block content %}{% endblock %}</div>
 
     <!-- Footer-->

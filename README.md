@@ -1,23 +1,7 @@
-## /blog/
+## 회원가입(또는 로그인) 성공 메세지
 
-![home](https://user-images.githubusercontent.com/51291185/178993442-538dc35d-e6d6-46a8-bae0-df0950d8f2eb.JPG)
+![msg](https://user-images.githubusercontent.com/51291185/182039456-b614a279-ad6d-4cb7-a336-dbee39d7fcac.png)
 
-## /blog/about
+## 동적 네비게이션 바
 
-![about](https://user-images.githubusercontent.com/51291185/178993737-8db00341-f505-453f-97fe-61ad59b01469.JPG)
-
-## /blog/categories
-
-![categories](https://user-images.githubusercontent.com/51291185/178993787-e7462cd4-4d42-4a3b-82ce-faa92d200d8e.JPG)
-
-## /blog/contact
-
-![contact](https://user-images.githubusercontent.com/51291185/178993796-2543d447-833e-478c-bdff-97384f5ada47.JPG)
-
-## /blog/login
-
-![login](https://user-images.githubusercontent.com/51291185/178993808-345297ad-f27a-4dce-a002-3eaf2e1bbb71.JPG)
-
-## /blog/signup
-
-![signup](https://user-images.githubusercontent.com/51291185/178993821-9a48c09d-76d1-45c7-92f2-e4fde4eafc2e.JPG)
+![navbar](https://user-images.githubusercontent.com/51291185/182039469-eeea8fb8-3087-4b8e-90a7-944271185f8f.png)

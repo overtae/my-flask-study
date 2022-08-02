@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Create a Post{% endblock %}
+
+{% block header %}
+    <header class="masthead"
+            style="background-image: url('{{ url_for('static', filename='assets/img/create-bg.jpg') }}'); height: 130px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Create a Post</h1>
+                        <h2>Post whatever you want!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content-->
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-12">
+                    <div class="my-5">
+                        <form id="createForm" method="POST">
+                            {{ form.csrf_token }}
+                            <div style="margin: 20px;">
+                                <input class="form-control" id="title" type="text" placeholder="Post Title"
+                                       name="title" style="font-size: 40px;"/>
+                            </div>
+                            <div style="margin: 20px;">
+                                <textarea class="form-control" id="content" type="text" placeholder="Content"
+                                          name="content" style="height: 500px;"></textarea>
+
+                            </div>
+                            <div style="margin: 20px;" id="category">
+                                <select class="form-control" name="category" required>
+                                    <option value="" disabled selected>select a category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br/>
+                            <div style="text-align: center">
+                                <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

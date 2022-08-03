@@ -1,13 +1,10 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from .models import DB_NAME, db, get_category_model, get_post_model, get_user_model
 from os import path
 from flask_login import LoginManager
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
-from pprint import pprint
-
-# DB 설정하기
-db = SQLAlchemy()
-DB_NAME = "blog_db"
 
 # app을 만들어주는 함수를 지정해 주자.
 
@@ -18,6 +15,15 @@ def create_app():
 
     # DB 설정하기
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # 관리자 페이지
+    app.config['FLASK_ADMIN_SWATCH'] = 'Darkly'
+    admin = Admin(app, name='blog', template_mode='bootstrap3')
+    admin.add_view(ModelView(get_user_model(), db.session))
+    admin.add_view(ModelView(get_post_model(), db.session))
+    admin.add_view(ModelView(get_category_model(), db.session))
+
     db.init_app(app)
 
     from .views import views

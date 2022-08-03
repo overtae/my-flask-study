@@ -4,9 +4,8 @@ import logging
 
 from flask_login import login_user, logout_user, current_user, login_required
 
-from . import db
 from .forms import SignupForm, LoginForm
-from .models import User
+from .models import db, get_user_model
 from flask import Blueprint, render_template, request, url_for, flash
 from werkzeug.utils import redirect
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,7 +22,7 @@ def login():
         password = form.password.data
 
         # 폼에서 받아온 이메일로 유저 찾기
-        user = User.query.filter_by(email=form.email.data).first()
+        user = get_user_model().query.filter_by(email=form.email.data).first()
 
         # 로그인 폼에서 입력된 이메일이 존재한다면,
         if user:
@@ -53,15 +52,15 @@ def signup():
     form = SignupForm()
     if request.method == 'POST' and form.validate_on_submit():
         # 폼으로부터 검증된 데이터 받아오기
-        signup_user = User(
+        signup_user = get_user_model()(
             email=form.email.data,
             username=form.username.data,
             password=generate_password_hash(form.password1.data)
         )
 
         # 폼에서 받아온 데이터가 데이터베이스에 이미 존재하는지 확인
-        email_exists = User.query.filter_by(email=form.email.data).first()
-        username_exists = User.query.filter_by(
+        email_exists = get_user_model().query.filter_by(email=form.email.data).first()
+        username_exists = get_user_model().query.filter_by(
             username=form.username.data).first()
 
         # 이메일 중복 검사

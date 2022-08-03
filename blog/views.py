@@ -74,7 +74,7 @@ def edit_post(id):
     form = PostForm()
     categories = get_category_model().query.all()
 
-    if current_user.is_staff == True and current_user.username == post.user.username:
+    if (current_user.is_staff == True) and (current_user.username == post.user.username):
         if request.method == "GET":
             # 원래 게시물 내용
             return render_template("post_edit.html", user=current_user, post=post, categories=categories, form=form)

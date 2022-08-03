@@ -1,7 +1,14 @@
-from flask import Flask
-from .models import DB_NAME, db, get_category_model, get_post_model, get_user_model
+import click
+from flask import Flask, abort
+from flask.cli import with_appcontext
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
+from wtforms import PasswordField, StringField
+from wtforms.validators import InputRequired
+
+from .models import DB_NAME, db, get_user_model, get_post_model, get_category_model
 from os import path
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
@@ -20,9 +27,50 @@ def create_app():
     # 관리자 페이지
     app.config['FLASK_ADMIN_SWATCH'] = 'Darkly'
     admin = Admin(app, name='blog', template_mode='bootstrap3')
-    admin.add_view(ModelView(get_user_model(), db.session))
-    admin.add_view(ModelView(get_post_model(), db.session))
-    admin.add_view(ModelView(get_category_model(), db.session))
+
+    class MyUserView(ModelView):
+        def is_accessible(self):
+            if current_user.is_authenticated and current_user.is_staff == True:
+                return True
+            else:
+                return abort(403)
+
+        class CustomPasswordField(StringField):
+            def populate_obj(self, obj, name):
+                setattr(obj, name, generate_password_hash(self.data))
+
+        form_extra_fields = {
+            'password': CustomPasswordField('Password', validators=[InputRequired()])
+        }
+        form_excluded_columns = {
+            'posts', 'created_at'
+        }
+
+    class MyPostView(ModelView):
+        def is_accessible(self):
+            if current_user.is_authenticated and current_user.is_staff == True:
+                return True
+            else:
+                return abort(403)
+
+        form_excluded_columns = {
+            'created_at', 'comments'
+        }
+
+    class MyCategoryView(ModelView):
+        def is_accessible(self):
+            if current_user.is_authenticated and current_user.is_staff == True:
+                return True
+            else:
+                return abort(403)
+
+        form_excluded_columns = {
+            'category'
+        }
+
+    admin.add_view(MyUserView(get_user_model(), db.session))
+    admin.add_view(MyPostView(get_post_model(), db.session))
+    admin.add_view(MyCategoryView(get_category_model(), db.session))
 
     db.init_app(app)
 

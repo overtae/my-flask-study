@@ -1,7 +1,12 @@
-## 회원가입(또는 로그인) 성공 메세지
+## 어드민 페이지
 
-![msg](https://user-images.githubusercontent.com/51291185/182039456-b614a279-ad6d-4cb7-a336-dbee39d7fcac.png)
+![admin-01](https://user-images.githubusercontent.com/51291185/182916202-e3ef4554-5436-4221-a24d-d26007a07790.png)
 
-## 동적 네비게이션 바
+## 카테고리 리스트 페이지
 
-![navbar](https://user-images.githubusercontent.com/51291185/182039469-eeea8fb8-3087-4b8e-90a7-944271185f8f.png)
+![catest-02](https://user-images.githubusercontent.com/51291185/182915968-62faeafb-5924-4a15-b815-5204f31ab760.png)
+
+## 특정 카테고리의 포스트 리스트 페이지
+
+![catest-07](https://user-images.githubusercontent.com/51291185/182916089-abf8d03d-9e06-4dcc-bc4b-152bcdc1f049.png)
+

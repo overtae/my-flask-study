@@ -98,6 +98,33 @@ def create_app():
     def load_user_by_id(id):
         return User.query.get(int(id))
 
+    # Custom Command Line
+    import click
+    from flask.cli import with_appcontext
+
+    @click.command(name="create_superuser")
+    @with_appcontext
+    def create_superuser():
+        username = input("Enter username : ")
+        email = input("Enter email : ")
+        password = input("Enter password : ")
+        is_staff = True
+
+        try:
+            superuser = get_user_model()(
+                username=username,
+                email=email,
+                password=generate_password_hash(password),
+                is_staff=is_staff
+            )
+            db.session.add(superuser)
+            db.session.commit()
+        except IntegrityError:
+            print('\033[31m' + "Error : username or email already exists.")
+        print(f"User created! : {email}")
+
+    app.cli.add_command(create_superuser)
+
     return app  # app 반환
 
 

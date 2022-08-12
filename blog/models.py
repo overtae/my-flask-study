@@ -46,6 +46,8 @@ class Post(db.Model):
         'category.id', ondelete='CASCADE'))
     category = db.relationship(
         'Category', backref=db.backref('category', cascade='delete'))
+    comments = db.relationship('Comment', backref=db.backref(
+        'post', cascade='delete'), passive_deletes=True)
 
 
 def get_post_model():
@@ -62,3 +64,25 @@ class Category(db.Model):
 
 def get_category_model():
     return Category
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text(), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           default=func.now())
+    # user 테이블의 id를 참조
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'),
+                          nullable=False)
+    user = db.relationship(
+        'User', backref=db.backref('users', cascade='delete'))
+    # post 테이블의 id를 참조
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'),
+                        nullable=False)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__}(title={self.content})>'
+
+
+def get_comment_model():
+    return Comment

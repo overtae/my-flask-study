@@ -25,3 +25,7 @@ class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     content = TextAreaField('content', validators=[DataRequired()])
     category = StringField('category', validators=[DataRequired()])
+
+
+class CommentForm(FlaskForm):
+    content = TextAreaField('content', validators=[DataRequired()])

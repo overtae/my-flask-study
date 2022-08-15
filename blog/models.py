@@ -24,6 +24,9 @@ class User(db.Model, UserMixin):
     # 스태프 권한이 있는 유저인지 아닌지를 판별, Boolean
     is_staff = db.Column(db.Boolean, default=False)
 
+    def __repr__(self):
+        return f'<{self.__class__.__name__}(name={self.username})>'
+
 
 def get_user_model():
     return User
@@ -46,8 +49,6 @@ class Post(db.Model):
         'category.id', ondelete='CASCADE'))
     category = db.relationship(
         'Category', backref=db.backref('category', cascade='delete'))
-    comments = db.relationship('Comment', backref=db.backref(
-        'post', cascade='delete'), passive_deletes=True)
 
 
 def get_post_model():
@@ -79,6 +80,8 @@ class Comment(db.Model):
     # post 테이블의 id를 참조
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'),
                         nullable=False)
+    post = db.relationship('Post', backref=db.backref(
+        'comments', cascade='delete'))
 
     def __repr__(self):
         return f'<{self.__class__.__name__}(title={self.content})>'

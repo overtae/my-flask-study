@@ -33,7 +33,7 @@ def post_list(id):
     return render_template("post_list.html", user=current_user, posts=posts, current_category=current_category)
 
 
-@views.route('/posts/<int:id>')
+@views.route('/posts/<int:id>', methods=['GET', 'POST'])
 def post_detail(id):
     comment_form = CommentForm()
     post = get_post_model().query.filter_by(id=id).first()
@@ -46,7 +46,7 @@ def contact():
     return render_template("contact.html", user=current_user)
 
 
-@views.route("/create-post", methods=['GET', 'POST'])
+@views.route("/create-post", methods=['POST'])
 @login_required
 def create_post():
     if current_user.is_staff == True:
@@ -92,15 +92,32 @@ def edit_post(id):
 
 
 @login_required
+@views.route("/delete-post/<int:id>")
+def delete_post(id):
+    post = get_post_model().query.filter_by(id=id).first()
+    # 작성자인 경우 > 게시물 삭제
+    if current_user.username == post.user.username:
+        db.session.delete(post)
+        db.session.commit()
+        return redirect(url_for("views.categories_list", id=id))
+    # 작성자가 아닌 경우 > 403 에러
+    else:
+        return abort(403)
+
+
+@login_required
 @views.route("/create-comment/<int:id>", methods=['POST'])
 def create_comment(id):
     form = CommentForm()
+    print(1)
     if request.method == "POST" and form.validate_on_submit():
+        print(1)
         comment = get_comment_model()(
             content=form.content.data,
             author_id=current_user.id,
-            post_id=id
+            post_id=id,
         )
+        print(1)
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for("views.post_detail", id=id))
@@ -118,5 +135,20 @@ def edit_comment(post_id, comment_id):
             return redirect(url_for("views.post_detail", id=post_id))
         else:
             print("validation failed")
+    else:
+        return abort(403)
+
+
+@login_required
+@views.route("/delete-comment/<int:post_id>/<int:id>")
+def delete_comment(post_id, id):
+    comment = get_comment_model().query.filter_by(post_id=post_id, id=id).first()
+
+    # 작성자인 경우 > 댓글 삭제
+    if current_user.username == comment.user.username:
+        db.session.delete(comment)
+        db.session.commit()
+        return redirect(url_for("views.post_detail", id=post_id))
+    # 작성자가 아닌 경우 > 403 에러
     else:
         return abort(403)

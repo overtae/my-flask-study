@@ -18,6 +18,9 @@
                         <button class="btn btn-info" id="edit-button">
                             <a href="{{ url_for("views.edit_post", id=post.id) }}">Edit</a>
                         </button>
+                        <button class="btn btn-danger" id="delete-button">
+                            <a href="{{ url_for("views.delete_post", id=post.id) }}">Delete</a>
+                        </button>
                         {% endif %}
 
                     </span>
@@ -43,7 +46,7 @@
             <div class="card bg-light">
                 <div class="card-body" id="comment-wrapper">
                     <!-- Comment form-->
-                    <form class="mb-4" method="post" action="">
+                    <form class="mb-4" method="POST">
                         {{ form.csrf_token }}
                         <textarea class="form-control mb-3" rows="3" name="content"
                                   placeholder="Join the discussion and leave a comment!"></textarea>
@@ -71,6 +74,10 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#editCommentModal{{ comment.id }}">
                                 Edit comment
+                            </button>
+                            <!-- 삭제 버튼 -->
+                            <button type="button" class="btn btn-danger">
+                                <a href="{{ url_for("views.delete_post", id=post.id) }}">Delete comment</a>
                             </button>
                             <!-- Modal -->
                             <div class="modal fade" id="editCommentModal{{ comment.id }}" tabindex="-1"

@@ -26,4 +26,4 @@ person_data_converter = PersonSchema()
 data = person_data_converter.load(JSON_minji_data)
 Person_object = Person(**data)
 
-print(Person_object)
+print(Person_object.__dict__)

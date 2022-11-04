@@ -16,10 +16,11 @@ class PostSchema(ma.SQLAlchemyAutoSchema):
             "author_name",
         ]
 
-        load_only = [
-            "author_id",
-        ]
+        # load_only = [
+        #     "author_id",
+        # ]
 
+        exclude = ("author_id",)
         load_instance = True
         include_fk = True
         ordered = True

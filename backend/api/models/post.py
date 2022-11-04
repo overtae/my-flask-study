@@ -45,6 +45,14 @@ class PostModel(db.Model):
         """
         db.session.add(self)
         db.session.commit()
+    
+    def update_to_db(self, data):
+        """
+        데이터베이스에 존재하는 게시물을 수정
+        """
+        for key, value in data.items():
+            setattr(self, key, value)
+        db.session.commit()
 
     def delete_from_db(self):
         """

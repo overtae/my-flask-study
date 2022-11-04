@@ -82,7 +82,7 @@ class PostList(Resource):
         post_json = request.get_json()
         username = get_jwt_identity()
         author_id = UserModel.find_by_username(username).id
-        print(author_id)
+
         try:
             new_post = post_schema.load(post_json)
             new_post.author_id = author_id

@@ -36,15 +36,23 @@ function loadPosts() {
     .then((result) => {
       for (let i = 0; i < result.length; i++) {
         copyDiv();
-        const authorNameElements = document.querySelectorAll('.author');
-        for (const authorName in authorNameElements) {
-          authorNameElements[authorName].innerText =
-            result[9 - i]['author_name'];
-        }
+        // 커버 이미지 요소를 선택하고 그립니다.
+        const coverImageElements = document.querySelector('.post-image');
+        coverImageElements.src = result[result.length - 1 - i]['image'];
+        // 저자 이름 요소를 선택하고, 그립니다.
+        const upAuthorElement = document.querySelector('.author-up');
+        upAuthorElement.innerText =
+          result[result.length - 1 - i]['author_name'];
+        const downAuthorElement = document.querySelector('.author-down');
+        downAuthorElement.innerText =
+          result[result.length - 1 - i]['author_name'];
+        // 제목 요소를 선택하고 그립니다.
         const titleElement = document.querySelector('.title');
-        titleElement.innerText = result[9 - i]['title'];
+        titleElement.innerText = result[result.length - 1 - i]['title'];
+        // 내용 요소를 선택하고 그립니다.
         const contentElement = document.querySelector('.content');
-        contentElement.innerText = result[9 - i]['content'];
+        contentElement.innerText = result[result.length - 1 - i]['content'];
+        // 게시물이 없다면 none 처리를 합니다.
         if (i == 0) {
           document.getElementById('copied-posts').style.display = 'none';
         }

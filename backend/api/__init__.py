@@ -12,6 +12,7 @@ from .ma import ma
 from .models import user, post, comment
 from .resources.post import Post, PostList
 from .resources.user import RefreshToken, UserRegister, UserLogin
+from .resources.image import PostImageUpload, ProfileImageUpload
 
 
 def create_app():
@@ -78,5 +79,7 @@ def create_app():
     api.add_resource(UserRegister, "/register/")
     api.add_resource(UserLogin, "/login/")
     api.add_resource(RefreshToken, "/refresh/")
+    api.add_resource(PostImageUpload, "/upload/post/image/")
+    api.add_resource(ProfileImageUpload, "/upload/profile/image/")
 
     return app

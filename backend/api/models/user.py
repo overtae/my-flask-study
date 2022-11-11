@@ -20,6 +20,7 @@ class UserModel(db.Model):
     password   : 사용자 비밀번호, 80자 제한
     email      : 이메일, 중복된 값을 가질 수 없음
     created_at : 사용자가 가입한 날짜
+    image      : 프로필 이미지
     """
     __tablename__ = "User"
 
@@ -28,6 +29,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(102), nullable=False)
     email = db.Column(db.String(80), nullable=False, unique=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
+    image = db.Column(db.String(255))
 
     followed = db.relationship(                             # 본인이 팔로우한 유저들
         'UserModel',                                        # User 모델 스스로를 참조
@@ -105,9 +107,11 @@ class RefreshTokenModel(db.Model):
     __tablename__ = "RefreshToken"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("User.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        "User.id", ondelete="CASCADE"), nullable=False)
     user = db.relationship("UserModel", backref="token")
-    refresh_token_value = db.Column(db.String(512), nullable=False, unique=True)
+    refresh_token_value = db.Column(
+        db.String(512), nullable=False, unique=True)
 
     def save_to_db(self):
         db.session.add(self)
@@ -120,9 +124,9 @@ class RefreshTokenModel(db.Model):
     @classmethod
     def get_user_by_token(cls, token):
         try:
-            user_id = cls.query.filter_by(refresh_token_value=token).first().user_id
+            user_id = cls.query.filter_by(
+                refresh_token_value=token).first().user_id
         except AttributeError:
             return None
         user = UserModel.find_by_id(id=user_id)
         return user
-

@@ -12,6 +12,7 @@ class PostModel(db.Model):
     updated_at  : 게시물의 생성일자, 게시물이 수정될 때마다 업데이트
     author_id   : 게시물의 저자 id, 외래 키
     comment_set : 게시물에 달린 댓글들
+    image       : 게시물 이미지
     """
 
     __tablename__ = "Post"
@@ -27,6 +28,7 @@ class PostModel(db.Model):
     author = db.relationship("UserModel", backref="post_author")
     comment_set = db.relationship(
         "CommentModel", backref="post", passive_deletes=True)
+    image = db.Column(db.String(255))
 
     @classmethod
     def find_by_id(cls, id):
@@ -45,7 +47,7 @@ class PostModel(db.Model):
         """
         db.session.add(self)
         db.session.commit()
-    
+
     def update_to_db(self, data):
         """
         데이터베이스에 존재하는 게시물을 수정

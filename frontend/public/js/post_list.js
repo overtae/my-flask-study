@@ -1,5 +1,6 @@
 // API 기본 URL들을 정의합니다.
 const postListBseUrl = 'http://127.0.0.1:5000/posts/';
+const imageBseUrl = 'http://127.0.0.1:5000/statics/';
 // #TODO : .env 로 url 주소 얻어오기
 
 /** Flask API 로부터 데이터를 가져옵니다.
@@ -38,7 +39,8 @@ function loadPosts() {
         copyDiv();
         // 커버 이미지 요소를 선택하고 그립니다.
         const coverImageElements = document.querySelector('.post-image');
-        coverImageElements.src = result[result.length - 1 - i]['image'];
+        coverImageElements.src =
+          imageBseUrl + result[result.length - 1 - i]['image'];
         // 저자 이름 요소를 선택하고, 그립니다.
         const upAuthorElement = document.querySelector('.author-up');
         upAuthorElement.innerText =

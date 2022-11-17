@@ -16,6 +16,7 @@ from .utils.image_upload import IMAGE_SET
 from .resources.post import Post, PostList
 from .resources.user import RefreshToken, UserRegister, UserLogin
 from .resources.image import PostImageUpload, ProfileImageUpload, Image
+from .resources.comment import CommentList, CommentDetail
 
 
 def create_app():
@@ -87,5 +88,7 @@ def create_app():
     api.add_resource(PostImageUpload, "/upload/post/image/")
     api.add_resource(ProfileImageUpload, "/upload/profile/image/")
     api.add_resource(Image, "/statics/<path:path>")
+    api.add_resource(CommentList, "/posts/<int:post_id>/comments/")
+    api.add_resource(Image, "/posts/<int:post_id>/comments/<int:comment_id>/")
 
     return app

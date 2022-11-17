@@ -27,7 +27,7 @@ class PostModel(db.Model):
         "User.id", ondelete="CASCADE"), nullable=False)
     author = db.relationship("UserModel", backref="post_author")
     comment_set = db.relationship(
-        "CommentModel", backref="post", passive_deletes=True)
+        "CommentModel", backref="post", passive_deletes=True, lazy="dynamic")
     image = db.Column(db.String(255))
 
     @classmethod

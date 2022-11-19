@@ -15,8 +15,7 @@ class CommentList(Resource):
     @classmethod
     def get(cls, post_id):
         post = PostModel.find_by_id(post_id)
-        ordered_comment_list = post.comment_set.order_by(
-            CommentModel.id.desc())
+        ordered_comment_list = post.comment_set.order_by(CommentModel.id.desc())
         return comment_list_schema.dump(ordered_comment_list)
 
     @jwt_required

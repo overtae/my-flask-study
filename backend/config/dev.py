@@ -2,8 +2,9 @@ from config.common import *
 import os
 
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(
-    os.path.join(BASE_DIR, 'flaskinstagram.db'))
+SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(
+    os.path.join(BASE_DIR, "flaskinstagram.db")
+)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 PROPGATE_EXECPTIONS = True
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]

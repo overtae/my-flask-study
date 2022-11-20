@@ -79,5 +79,28 @@ class CommentDetail(Resource):
         return comment_schema.dump(comment), 200
 
     @classmethod
+    @jwt_required()
     def delete(cls, post_id, comment_id):
-        pass
+        """
+        특정 게시물의 특정 댓글 삭제
+        """
+        # 요청을 보낸 사용자
+        username = get_jwt_identity()
+        author_id = UserModel.find_by_username(username).id
+
+        post = PostModel.find_by_id(post_id)
+        comment = CommentModel.find_by_id(comment_id)
+
+        # 게시물의 존재 여부 체크
+        if not post:
+            return {"Error": "게시물을 찾을 수 없습니다."}, 404
+
+        # 댓글이 존재하는지 확인
+        if comment:
+            # 댓글의 작성자와 요청을 보낸 사용자가 같은지 확인
+            if comment.author_id == author_id:
+                comment.delete_from_db()
+                return {"message": "댓글이 성공적으로 삭제되었습니다."}, 200
+            else:
+                return {"Error": "댓글은 작성자만 삭제할 수 있습니다."}, 403
+        return {"Error": "댓글을 찾을 수 없습니다."}, 404

@@ -12,24 +12,36 @@ class CommentModel(db.Model):
     author_id  : 해당 댓글의 저자 id
     post_id    : 해당 댓글의 게시물 id
     """
+
     __tablename__ = "Comment"
 
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True),
-                           default=func.now(), onupdate=func.now())
-    author_id = db.Column(db.Integer, db.ForeignKey(
-        'User.id', ondelete='CASCADE'), nullable=False)
+    updated_at = db.Column(
+        db.DateTime(timezone=True), default=func.now(), onupdate=func.now()
+    )
+    author_id = db.Column(
+        db.Integer, db.ForeignKey("User.id", ondelete="CASCADE"), nullable=False
+    )
     author = db.relationship("UserModel", backref="comment_author")
-    post_id = db.Column(db.Integer, db.ForeignKey(
-        'Post.id', ondelete='CASCADE'), nullable=False)
+    post_id = db.Column(
+        db.Integer, db.ForeignKey("Post.id", ondelete="CASCADE"), nullable=False
+    )
 
     def save_to_db(self):
         """
         댓글을 데이터베이스에 저장
         """
         db.session.add(self)
+        db.session.commit()
+
+    def update_to_db(self, data):
+        """
+        데이터베이스에 존재하는 댓글을 수정
+        """
+        for key, value in data.items():
+            setattr(self, key, value)
         db.session.commit()
 
     def delete_from_db(self):
@@ -47,4 +59,4 @@ class CommentModel(db.Model):
         return cls.query.filter_by(id=id).first()
 
     def __repr__(self):
-        return f'<Comment Object : {self.content}>'
+        return f"<Comment Object : {self.content}>"

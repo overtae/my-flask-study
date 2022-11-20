@@ -18,8 +18,8 @@ class CommentList(Resource):
         ordered_comment_list = post.comment_set.order_by(CommentModel.id.desc())
         return comment_list_schema.dump(ordered_comment_list)
 
-    @jwt_required
     @classmethod
+    @jwt_required()
     def post(cls, post_id):
         comment_json = request.get_json()
         username = get_jwt_identity()

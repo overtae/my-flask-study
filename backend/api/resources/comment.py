@@ -70,11 +70,15 @@ class CommentDetail(Resource):
         if not comment:
             return {"Error": "댓글을 찾을 수 없습니다."}, 404
 
-        # 댓글의 작성자와, 요청을 보낸 사용자가 같다면 수정
-        if comment.author_id == author_id:
-            comment.update_to_db(comment_json)
+        # 댓글의 작성자와 요청을 보낸 사용자가 같고,
+        # 댓글의 게시물 id와 post_id가 같다면 수정
+        if comment.post_id == post_id:
+            if comment.author_id == author_id:
+                comment.update_to_db(comment_json)
+            else:
+                return {"Error": "댓글은 작성자만 수정할 수 있습니다."}, 403
         else:
-            return {"Error": "댓글은 작성자만 수정할 수 있습니다."}, 403
+            return {"Error": "댓글을 찾을 수 없습니다."}, 404
 
         return comment_schema.dump(comment), 200
 
@@ -96,8 +100,9 @@ class CommentDetail(Resource):
             return {"Error": "게시물을 찾을 수 없습니다."}, 404
 
         # 댓글이 존재하는지 확인
-        if comment:
+        if comment and comment.post_id == post_id:
             # 댓글의 작성자와 요청을 보낸 사용자가 같은지 확인
+            # post_id의 댓글인지 확인
             if comment.author_id == author_id:
                 comment.delete_from_db()
                 return {"message": "댓글이 성공적으로 삭제되었습니다."}, 200

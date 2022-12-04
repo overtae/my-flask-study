@@ -2,13 +2,21 @@ from ..db import db
 
 
 followers = db.Table(
-    'followers',
+    "followers",
     # 나를 팔로우하는 사람들의 id
-    db.Column('follower_id', db.Integer, db.ForeignKey(
-        'User.id', ondelete='CASCADE'), primary_key=True),
+    db.Column(
+        "follower_id",
+        db.Integer,
+        db.ForeignKey("User.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
     # 내가 팔로우한 사람들의 id
-    db.Column('followed_id', db.Integer, db.ForeignKey(
-        'User.id', ondelete='CASCADE'), primary_key=True)
+    db.Column(
+        "followed_id",
+        db.Integer,
+        db.ForeignKey("User.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -22,6 +30,7 @@ class UserModel(db.Model):
     created_at : 사용자가 가입한 날짜
     image      : 프로필 이미지
     """
+
     __tablename__ = "User"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -31,15 +40,15 @@ class UserModel(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     image = db.Column(db.String(255))
 
-    followed = db.relationship(                             # 본인이 팔로우한 유저들
-        'UserModel',                                        # User 모델 스스로를 참조
-        secondary=followers,                                # 연관 테이블 이름을 지정
+    followed = db.relationship(  # 본인이 팔로우한 유저들
+        "UserModel",  # User 모델 스스로를 참조
+        secondary=followers,  # 연관 테이블 이름을 지정
         # followers 테이블에서 특정 유저를 팔로우하는 유저들을 찾음
         primaryjoin=(followers.c.follower_id == id),
         # followers 테이블에서 특정 유저가 팔로우한 모든 유저들을 찾음
         secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('follower_set', lazy='dynamic'),  # 역참조 관계 설정
-        lazy='dynamic'
+        backref=db.backref("follower_set", lazy="dynamic"),  # 역참조 관계 설정
+        lazy="dynamic",
     )
 
     def follow(self, user):
@@ -99,19 +108,27 @@ class UserModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def update_to_db(self, data):
+        """
+        데이터베이스에 존재하는 사용자 정보 수정
+        """
+        for key, value in data.items():
+            setattr(self, key, value)
+        db.session.commit()
+
     def __repr__(self):
-        return f'<User Object : {self.username}>'
+        return f"<User Object : {self.username}>"
 
 
 class RefreshTokenModel(db.Model):
     __tablename__ = "RefreshToken"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        "User.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("User.id", ondelete="CASCADE"), nullable=False
+    )
     user = db.relationship("UserModel", backref="token")
-    refresh_token_value = db.Column(
-        db.String(512), nullable=False, unique=True)
+    refresh_token_value = db.Column(db.String(512), nullable=False, unique=True)
 
     def save_to_db(self):
         db.session.add(self)
@@ -124,8 +141,7 @@ class RefreshTokenModel(db.Model):
     @classmethod
     def get_user_by_token(cls, token):
         try:
-            user_id = cls.query.filter_by(
-                refresh_token_value=token).first().user_id
+            user_id = cls.query.filter_by(refresh_token_value=token).first().user_id
         except AttributeError:
             return None
         user = UserModel.find_by_id(id=user_id)

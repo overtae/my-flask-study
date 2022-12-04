@@ -11,6 +11,7 @@ post_list_schema = PostSchema(many=True)
 
 class Post(Resource):
     @classmethod
+    @jwt_required()
     def get(cls, id):
         post = PostModel.find_by_id(id)
         if post:
@@ -45,7 +46,6 @@ class Post(Resource):
 
         return post_schema.dump(post), 200
 
-
     @classmethod
     @jwt_required()
     def delete(cls, id):
@@ -54,7 +54,7 @@ class Post(Resource):
         author_id = UserModel.find_by_username(username).id
 
         post = PostModel.find_by_id(id)
-        
+
         # 게시물이 존재하는지 확인
         if post:
             # 게시물의 작성자와 요청을 보낸 사용자가 같은지 확인
@@ -68,6 +68,7 @@ class Post(Resource):
 
 class PostList(Resource):
     @classmethod
+    @jwt_required()
     def get(cls):
         page = request.args.get("page", type=int, default=1)
         ordered_posts = PostModel.query.order_by(PostModel.id.desc())
@@ -91,5 +92,5 @@ class PostList(Resource):
         try:
             new_post.save_to_db()
         except:
-            return {'Error': '저장에 실패하였습니다.'}, 500
+            return {"Error": "저장에 실패하였습니다."}, 500
         return post_schema.dump(new_post), 201

@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask_uploads import UploadNotAllowed
 from flask import request, send_file, send_from_directory, url_for
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 import time
 import traceback
 import os
@@ -59,7 +59,8 @@ class ProfileImageUpload(AbstractImageUpload):
     """
 
     def set_folder_name(self):
-        return f"profile/{get_jwt_identity()}"
+        jwt = get_jwt()
+        return f"profile/{jwt['user_id']}"
 
     @jwt_required()
     def post(self):

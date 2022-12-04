@@ -70,7 +70,7 @@
 
 - `api/resources`에서 사용자 요청을 받아 처리
   * `api/schema`나 `api/model`에서 필요한 schema나 model을 import하여 사용
-  * `api/model`에서 데이터베이스 이용
+  * `api/model`에서 데이터베이스 접근
 
 
 ### 프론트엔드

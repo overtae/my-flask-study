@@ -83,7 +83,7 @@
 
 ## 인스타그램 클론코딩
 
-### :sparkles: [Flastagram]([https://github.com/overtae/my-flask-study/tree/15-flask-instagram](https://github.com/overtae/my-flask-study/tree/flastagram)) :sparkles:
+### :sparkles: [Flastagram](https://github.com/overtae/my-flask-study/tree/flastagram) :sparkles:
 
 </div>
   

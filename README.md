@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://flask.palletsprojects.com/en/2.2.x/_images/flask-logo.png" alt="Flask" width="500"  style="background-color:yellow">
+  <img src="https://flask.palletsprojects.com/en/2.2.x/_images/flask-logo.png" alt="Flask" width="500"  style="background-color:white">
   <br>
   My Flask Study
   <br>

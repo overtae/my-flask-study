@@ -15,8 +15,11 @@ class Post(Resource):
     def get(cls, id):
         post = PostModel.find_by_id(id)
         if post:
-            return post_schema.dump(post), 200
-        return {"Error": "게시물을 찾을 수 없습니다."}, 404
+            user = UserModel.find_by_username(get_jwt_identity())
+            _post_schema = PostSchema(context={"user": user})
+            return _post_schema.dump(post), 200
+        else:
+            return {"Error": "게시물을 찾을 수 없습니다."}, 404
 
     @classmethod
     @jwt_required()
@@ -70,11 +73,23 @@ class PostList(Resource):
     @classmethod
     @jwt_required()
     def get(cls):
+        user = UserModel.find_by_username(get_jwt_identity())
         page = request.args.get("page", type=int, default=1)
-        ordered_posts = PostModel.query.order_by(PostModel.id.desc())
-        pagination = ordered_posts.paginate(page, per_page=10, error_out=False)
-        result = post_list_schema.dump(pagination.items)
-        return result
+        _post_list_schema = PostSchema(context={"user": user}, many=True)
+        # 사용자가 팔로우하고 있는 모든 사용자
+        followed = user.followed.all()
+        # 사용자가 팔로우하고 있는 모든 사용자들의 게시물들
+        ordered_posts = PostModel.filter_by_followed(followed_users=followed)
+        # 클라이언트로부터 검색어 얻어오기
+        search_querystring = f'%%{request.args.to_dict().get("search")}%%'
+
+        # 검색어가 존재한다면, ordered_posts 재할당
+        if request.args.to_dict().get("search"):
+            ordered_posts = PostModel.filter_by_string(search_querystring).order_by(
+                PostModel.id.desc()
+            )
+        pagination = ordered_posts.paginate(page=page, per_page=10, error_out=False)
+        return _post_list_schema.dump(pagination.items)
         # return {'posts': post_list_schema.dump(PostModel.find_all())}, 200
 
     @classmethod
@@ -94,3 +109,33 @@ class PostList(Resource):
         except:
             return {"Error": "저장에 실패하였습니다."}, 500
         return post_schema.dump(new_post), 201
+
+
+class PostLike(Resource):
+    @classmethod
+    @jwt_required()
+    def put(cls, id):
+        """
+        id 로 특정되는 게시물에 좋아요를 누릅니다.
+        """
+        # 사용자, 게시물을 특정
+        user = UserModel.find_by_username(get_jwt_identity())
+        post = PostModel.find_by_id(id)
+        if not user or not post:
+            return {"Error": "잘못된 요청입니다."}, 400
+        post.do_like(user)
+        return post.get_liker_count(), 200
+
+    @classmethod
+    @jwt_required()
+    def delete(cls, id):
+        """
+        id 로 특정되는 게시물에 좋아요를 취소합니다.
+        """
+        # 사용자, 게시물을 특정
+        user = UserModel.find_by_username(get_jwt_identity())
+        post = PostModel.find_by_id(id)
+        if not user or not post:
+            return {"Error": "잘못된 요청입니다."}, 400
+        post.cancel_like(user)
+        return post.get_liker_count(), 200

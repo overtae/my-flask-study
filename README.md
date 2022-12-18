@@ -67,11 +67,11 @@
 
 </div>
   
-### 주요 기능
+### :mag: 주요 기능
 
 :small_blue_diamond: 데이터 생성/조회/수정/삭제
 
-### 블로그 정리
+### :mag: 블로그 정리
 
 :small_blue_diamond: [Flask로 HTTP API 구축하기](https://overtae.github.io/blog/python%20flask/flask-http-api-1/)
 
@@ -87,13 +87,13 @@
 
 </div>
   
-### 주요 기능
+### :mag: 주요 기능
 
 | 백엔드 | 프론트엔드 |
 | :--- | :--- |
 | :small_blue_diamond: 게시물 생성/조회/수정/삭제<br>:small_blue_diamond: 게시물 페이지네이션<br>:small_blue_diamond: 댓글 생성/조회/수정/삭제<br>:small_blue_diamond: 회원가입/로그인<br>:small_blue_diamond: 이미지 저장/조회 | :small_blue_diamond: 게시물 목록을 받아와 무한 스크롤<br>:small_blue_diamond: 게시물 생성 |
 
-### 블로그 정리
+### :mag: 블로그 정리
 
 :small_blue_diamond: [클라이언트/서버 사이드 렌더링](https://overtae.github.io/blog/python%20flask/flask-cors/)
 

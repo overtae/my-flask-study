@@ -40,15 +40,14 @@ async function submitLoginData() {
     body: getFormJson(),
     redirect: 'follow',
   };
-  const response = await fetch('http://127.0.0.1:5000/login/', requestOptions);
+  const response = await fetch(LOGIN_API_URL, requestOptions);
   if (response.status == 200) {
     loginResponse = await response.json();
     const access_token = loginResponse['access_token'];
     const refresh_token = loginResponse['refresh_token'];
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    alert(JSON.stringify(loginResponse));
-    window.location.href = 'http://localhost:3000/flastagram/posts/';
+    localStorage.setItem('ACCESS_TOKEN', access_token);
+    localStorage.setItem('REFRESH_TOKEN', refresh_token);
+    window.location.href = FRONTEND_SERVER_BASE_URL + '/flastagram/posts';
   } else {
     alert(JSON.stringify(await response.json()));
   }

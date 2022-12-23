@@ -14,7 +14,13 @@ from .ma import ma
 from .models import user, post, comment
 from .utils.image_upload import IMAGE_SET
 from .resources.post import Post, PostList, PostLike
-from .resources.user import RefreshToken, UserRegister, UserLogin, MyPage, Follow
+from .resources.user import (
+    RefreshToken,
+    UserRegister,
+    UserLogin,
+    MyPage,
+    Follow,
+)
 from .resources.image import PostImageUpload, ProfileImageUpload, Image
 from .resources.comment import CommentList, CommentDetail
 

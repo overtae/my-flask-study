@@ -75,10 +75,10 @@ body {
 }
 
 .user-profile {
-  width: 22px;
+  width: 30px;
+  height: 30px;
   border-radius: 50px;
-  background-image: url(../img/logo.png);
-  background-size: cover;
+  background-image: url(../img/logo.png) center/cover;
 }
 
 .main {
@@ -233,6 +233,33 @@ body {
   font-size: 12px;
 }
 
+.author-down {
+  font-weight: 600;
+}
+
+.comments-wrapper {
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #dfdfdf;
+}
+
+.comment .divider {
+  margin: 10px 0;
+}
+
+.comment:last-child .divider {
+  display: none;
+}
+
+.comment .comment-author {
+  font-weight: 600;
+}
+
 .comment-wrapper {
   width: 100%;
   height: 50px;
@@ -240,10 +267,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.comment-wrapper .icon {
-  height: 30px;
 }
 
 .comment-box {

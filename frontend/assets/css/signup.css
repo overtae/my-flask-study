@@ -19,7 +19,7 @@ body {
 
 .main-content {
   width: 400px;
-  height: 300px;
+  height: 400px;
   margin: 10px auto;
   background-color: #fff;
   border: 2px solid #e6e6e6;
@@ -27,7 +27,7 @@ body {
   opacity: 0.9;
 }
 
-.login-form {
+.signup-form {
   margin-top: 75px;
 }
 
@@ -43,8 +43,7 @@ body {
   position: relative;
 }
 
-.email-input,
-.password-input {
+input[class$='-input'] {
   width: 100%;
   margin-bottom: 5px;
   padding: 8px 12px;

@@ -127,15 +127,24 @@
                 </div>
                 <p class="likes"></p>
                 <p class="description"></p>
-                <span class="author-down"></span>-
+                <span class="author-down"></span> -
                 <span class="title"></span>
                 <p class="content"></p>
                 <p class="post-time"></p>
               </div>
+              <div class="divider"></div>
+              <div class="comments-wrapper">
+                <div class="comment" style="display: none">
+                  <span class="comment-author"></span> -
+                  <span class="comment-content"></span>
+                  <div class="divider"></div>
+                </div>
+              </div>
+              <div class="divider"></div>
               <div class="comment-wrapper">
-                <img src="/assets/img/smile.PNG" class="icon" alt="pic" />
+                <img src="" class="user-profile icon" alt="" />
                 <input type="text" class="comment-box" placeholder="Add a comment!" />
-                <button class="comment-btn">post</button>
+                <button class="comment-btn" onclick="addCommentButton(this);">post</button>
               </div>
             </div>
           </div>

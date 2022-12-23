@@ -8,6 +8,7 @@ const API_SERVER_BASE_URL = 'http://127.0.0.1:5000';
 // API 서버 기능별 URL
 const POST_LIST_API_URL = API_SERVER_BASE_URL + '/posts/';
 const STATIC_FILES_API_URL = API_SERVER_BASE_URL + '/statics/';
+const SIGNUP_API_URL = API_SERVER_BASE_URL + '/register/';
 const LOGIN_API_URL = API_SERVER_BASE_URL + '/login/';
 const REFRESH_TOKEN_API_URL = API_SERVER_BASE_URL + '/refresh/';
 const MYPAGE_API_URL = API_SERVER_BASE_URL + '/mypage/';

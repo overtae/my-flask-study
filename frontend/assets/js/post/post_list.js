@@ -21,9 +21,12 @@ async function getProfileImagebyId(id) {
  */
 async function loadProfileImage() {
   userId = await decodeJWT(ACCESS_TOKEN)['user_id'];
-  profileElement = document.getElementsByClassName('user-profile');
+  profileElements = document.getElementsByClassName('user-profile');
   let src = STATIC_FILES_API_URL + (await getProfileImagebyId(userId));
-  profileElement[0].src = src;
+
+  for (let i = 0; i < profileElements.length; i++) {
+    profileElements[i].src = src;
+  }
 }
 
 /**
@@ -64,12 +67,52 @@ async function getPostListDatafromAPI(page = 1) {
 }
 
 /**
+ * 댓글 리스트 불러오기
+ */
+async function getCommentListDatafromAPI(id) {
+  try {
+    let myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${ACCESS_TOKEN}`);
+    myHeaders.append('Content-Type', 'application/json');
+
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+
+    let rawResult = await fetch(POST_LIST_API_URL + id + '/comments/', requestOptions);
+    // 만약 액세스 토큰이 만료되었다면, 새로운 액세스 토큰을 받아옵니다.
+    if (rawResult.status == 401) {
+      getNewJWT();
+    }
+    rawResult = await fetch(POST_LIST_API_URL + id + '/comments/', requestOptions);
+
+    // 만약 리프레시 토큰도 만료되었다면, 로그인 페이지로 리다이렉트 처리합니다.
+    if (rawResult.status == 401) {
+      window.location.href = LOGIN_FRONTEND_URL;
+    }
+    const result = rawResult.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
  * post Div 전체를 복사해 반환합니다.
  */
 function getCopyDiv() {
   const postDiv = document.querySelector('.post');
   const newNode = postDiv.cloneNode(true);
   newNode.id = 'copied-post';
+  newNode.style = 'display=inline';
+  return newNode;
+}
+
+function getCopyCommentDiv() {
+  const commentDiv = document.querySelector('.comments-wrapper .comment');
+  const newNode = commentDiv.cloneNode(true);
+  newNode.id = 'copied-comment';
   newNode.style = 'display=inline';
   return newNode;
 }
@@ -98,6 +141,21 @@ function getCompletedPost(
   let likerCount = div.children[2].children[1];
   let isLike = div.children[2].children[0].children[0].children[0];
 
+  // 댓글 리스트
+  let commentsWrapper = div.children[4];
+  getCommentListDatafromAPI(idValue).then((result) => {
+    for (let i = 0; i < result.length; i++) {
+      comment = getCopyCommentDiv();
+      let commentAuthor = comment.children[0];
+      let commentContent = comment.children[1];
+
+      commentAuthor.innerText = result[i].author_name;
+      commentContent.innerText = result[i].content;
+
+      commentsWrapper.append(comment);
+    }
+  });
+
   div.id = idValue;
   title.innerText = titleValue;
   feedImg.src = feedImgValue;
@@ -106,6 +164,7 @@ function getCompletedPost(
   authorUpImg.src = authorImageValue;
   authorDownName.innerText = authorNameValue;
   likerCount.innerText = `${likerCountValue} Likes`;
+
   if (isLikeValue == false) {
     isLike.classList.add('fa-regular');
     isLike.classList.add('fa-heart');
@@ -157,6 +216,34 @@ function loadMorePosts(page) {
       );
     }
   });
+}
+
+function addCommentButton(commentButton) {
+  let postId = commentButton.parentElement.parentElement.id;
+  let content = commentButton.parentElement.children[1].value;
+
+  if (content) {
+    commentButton.disabled = false;
+
+    let myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${ACCESS_TOKEN}`);
+    myHeaders.append('Content-Type', 'application/json');
+
+    let myBody = JSON.stringify({ content: content });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow',
+      body: myBody,
+    };
+
+    fetch(`${POST_LIST_API_URL}${postId}/comments/`, requestOptions)
+      .then((response) => response.text())
+      .catch((error) => console.log('error', error));
+  } else {
+    commentButton.disabled = true;
+  }
 }
 
 function toggleLikeButton(likeButton) {

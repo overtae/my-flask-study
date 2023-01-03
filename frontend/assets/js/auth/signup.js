@@ -33,7 +33,7 @@ async function submitSignupData() {
   };
 
   const response = await fetch(SIGNUP_API_URL, requestOptions);
-  if (response.status == 200) {
+  if (response.status == 201) {
     signupResponse = await response.json();
     window.location.href = LOGIN_FRONTEND_URL;
   } else {

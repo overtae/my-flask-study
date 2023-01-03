@@ -20,6 +20,7 @@ from .resources.user import (
     UserLogin,
     MyPage,
     Follow,
+    Recommend,
 )
 from .resources.image import PostImageUpload, ProfileImageUpload, Image
 from .resources.comment import CommentList, CommentDetail
@@ -99,5 +100,7 @@ def create_app():
     api.add_resource(CommentDetail, "/posts/<int:post_id>/comments/<int:comment_id>/")
 
     api.add_resource(MyPage, "/mypage/<int:id>/")
+
+    api.add_resource(Recommend, "/users/recommend-followers/")
 
     return app

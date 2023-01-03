@@ -1,3 +1,4 @@
+import random
 from api.models.user import UserModel, RefreshTokenModel
 from flask_restful import Resource, request
 from api.schemas.user import UserRegisterSchema, UserSchema
@@ -14,6 +15,7 @@ from werkzeug.security import check_password_hash
 
 register_schema = UserRegisterSchema()
 user_schema = UserSchema()
+user_list_schema = UserSchema(many=True, exclude=["email", "created_at"])
 
 
 class UserRegister(Resource):
@@ -186,3 +188,19 @@ class Follow(Resource):
             return {"error": "스스로를 팔로우할 수 없습니다."}, 400
         request_user.unfollow(user_to_unfollow)
         return "", 204
+
+class Recommend(Resource):
+    @classmethod
+    @jwt_required()
+    def get(cls):
+        request_user = UserModel.find_by_username(get_jwt_identity())
+        return user_list_schema.dump(
+            random.sample(
+                list(
+                    set(UserModel.query.all())
+                    - set([request_user])
+                    - set(request_user.followed.all())
+                ),
+                2,
+            )
+        )

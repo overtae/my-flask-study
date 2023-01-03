@@ -6,6 +6,10 @@ let REFRESH_TOKEN = localStorage.getItem('REFRESH_TOKEN');
 const API_SERVER_BASE_URL = 'http://127.0.0.1:5000';
 
 // API 서버 기능별 URL
+const RECOMMEND_API_URL = API_SERVER_BASE_URL + '/users/recommend-followers/';
+const FOLLOW_API_URL = (id) => {
+  return API_SERVER_BASE_URL + `/users/${id}/followers/`;
+};
 const POST_LIST_API_URL = API_SERVER_BASE_URL + '/posts/';
 const STATIC_FILES_API_URL = API_SERVER_BASE_URL + '/statics/';
 const SIGNUP_API_URL = API_SERVER_BASE_URL + '/register/';

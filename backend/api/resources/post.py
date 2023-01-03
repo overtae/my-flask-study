@@ -79,7 +79,7 @@ class PostList(Resource):
         # 사용자가 팔로우하고 있는 모든 사용자
         followed = user.followed.all()
         # 사용자가 팔로우하고 있는 모든 사용자들의 게시물들
-        ordered_posts = PostModel.filter_by_followed(followed_users=followed)
+        ordered_posts = PostModel.filter_by_followed(followed_users=followed, request_user=user)
         # 클라이언트로부터 검색어 얻어오기
         search_querystring = f'%%{request.args.to_dict().get("search")}%%'
 

@@ -1,6 +1,6 @@
 from api.ma import ma
 from marshmallow.fields import String
-from marshmallow import validates_schema
+from marshmallow import validates_schema, post_dump
 from marshmallow.exceptions import ValidationError
 from api.models.user import UserModel
 from marshmallow import fields
@@ -30,6 +30,11 @@ class UserRegisterSchema(ma.SQLAlchemyAutoSchema):
 
 
 class AuthorSchema(ma.SQLAlchemyAutoSchema):
+    @post_dump
+    def set_default_image(self, data, **kwargs):
+        if data["image"] == "" or data["image"] == None:
+            data["image"] = "default/default_profile_img.png"
+        return data
     class Meta:
         model = UserModel
         exclude = (
@@ -42,6 +47,12 @@ class AuthorSchema(ma.SQLAlchemyAutoSchema):
 class UserSchema(ma.SQLAlchemyAutoSchema):
     image = String(required=True)
     created_at = fields.DateTime(format="%Y-%m-%d")
+    
+    @post_dump
+    def set_default_image(self, data, **kwargs):
+        if data["image"] == "" or data["image"] == None:
+            data["image"] = "default/default_profile_img.png"
+        return data
 
     class Meta:
         model = UserModel

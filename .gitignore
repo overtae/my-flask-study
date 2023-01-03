@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,flask,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,flask,python
 
+### static ###
+profile/
+post/
+*.jpg:Zone.Identifier
+
 ### Flask ###
 instance/*
 !instance/.gitignore

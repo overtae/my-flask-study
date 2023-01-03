@@ -1,3 +1,70 @@
+// TODO 백엔드 폴더에 이미지가 존재하지 않을 때 처리 (프론트엔드)
+
+/**
+ * 사용자 추천 API 를 사용해서 랜덤한 사용자 2명의 정보를 불러옵니다.
+ */
+async function getRecommendData(id) {
+  let myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${ACCESS_TOKEN}`);
+  myHeaders.append('Content-Type', 'application/json');
+
+  let requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  return await (await fetch(RECOMMEND_API_URL, requestOptions)).json();
+}
+
+/**
+ * 사용자 추천 API로부터 받아온 데이터로 화면을 그립니다.
+ */
+async function loadRecommend() {
+  recommendElement = document.getElementsByClassName('recommend');
+  let recommendData = await getRecommendData();
+  for (let i = 0; i <= 1; i++) {
+    recommendElement[i].children[2].id = recommendData[i]['id'];
+    recommendElement[i].children[0].children[0].src = STATIC_FILES_API_URL + recommendData[i]['image'];
+    recommendElement[i].children[1].children[0].innerText = recommendData[i]['username'];
+  }
+}
+
+/**
+ * 팔로우 & 언팔로우를 처리합니다.
+ */
+function toggleFollowButton(followButton) {
+  let id = followButton.id;
+  let myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${ACCESS_TOKEN}`);
+  myHeaders.append('Content-Type', 'application/json');
+
+  if (followButton.innerHTML === 'Follow') {
+    // 팔로우 요청 보내기
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(FOLLOW_API_URL(id), requestOptions)
+      .then((response) => response.status)
+      .catch((error) => console.log('error', error));
+    followButton.innerHTML = 'Unfollow';
+  } else {
+    // 언팔로우 요청 보내기
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(FOLLOW_API_URL(id), requestOptions)
+      .then((response) => response.status)
+      .catch((error) => console.log('error', error));
+    followButton.innerHTML = 'Follow';
+  }
+}
+
 /**
  * jwt 에서 얻은 유저의 id 로 프로필 사진을 얻어옵니다.
  */
@@ -336,6 +403,7 @@ function executeInfiniteScroll() {
 function main() {
   executeInfiniteScroll(); // 스크롤을 내릴 때마다 게시물을 로드 (무한스크롤)
   loadProfileImage(); // 네비게이션 바에 프로필 사진을 뿌려줍니다.
+  loadRecommend(); // 사용자 추천 정보를 그려줍니다.
 }
 
 main();

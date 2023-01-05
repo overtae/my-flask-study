@@ -4,7 +4,6 @@ flask-marshmallow==0.14.0
 Flask-Migrate==3.1.0
 Flask-RESTful==0.3.9
 Flask-SQLAlchemy==2.5.1
-Flask-Uploads==0.2.1
 flask-cors
 MarkupSafe==2.1.1
 marshmallow==3.18.0
@@ -14,4 +13,4 @@ PyJWT==2.4.0
 python-dotenv==0.21.0
 pytz==2022.2.1
 six==1.16.0
-SQLAlchemy==1.4.40
+SQLAlchemy==1.4.41

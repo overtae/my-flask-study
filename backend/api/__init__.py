@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_uploads import configure_uploads, patch_request_class
+from utils.flask_uploads import configure_uploads, patch_request_class
 from marshmallow import ValidationError
 
 from .db import db

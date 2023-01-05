@@ -82,6 +82,8 @@
 - access, refresh 토큰을 사용한 로그인
 - 로그인 정보(토큰)를 로컬 스토리지에 저장
 - 마이페이지 API를 이용한 사용자 정보 조회, 수정
+- 사용자 회원가입
+- 게시물 댓글 API를 이용한 댓글 조회 및 생성
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

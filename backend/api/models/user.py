@@ -1,4 +1,5 @@
 from ..db import db
+import re
 
 followers = db.Table(
     "followers",
@@ -94,6 +95,16 @@ class UserModel(db.Model):
         데이터베이스에서 id 로 특정 사용자 찾기
         """
         return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def check_password(cls, password):
+        """
+        비밀번호 검증
+        """
+        password_regex = re.compile(
+            "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@!?.])[A-Za-z0-9@!?.]{{8,}}"
+        )
+        return password_regex.match(password)
 
     def save_to_db(self):
         """

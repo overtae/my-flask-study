@@ -1,0 +1,9 @@
+README.md
+Dockerfile
+
+__pycache__/
+flastagram.db
+venv
+
+post
+profile

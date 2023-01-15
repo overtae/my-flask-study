@@ -39,6 +39,8 @@ class UserRegister(Resource):
                 return {"bad request": "중복된 사용자 이름입니다."}, 400
             elif UserModel.find_by_email(data["email"]):
                 return {"message": "중복된 이메일입니다."}, 400
+            elif not UserModel.check_password(data["password"]):
+                return {"message": "유효하지 않은 비밀번호입니다."}, 400
             else:
                 password = generate_password_hash(data["password"])
                 user = register_schema.load(

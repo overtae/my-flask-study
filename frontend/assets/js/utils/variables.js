@@ -3,7 +3,7 @@ let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
 let REFRESH_TOKEN = localStorage.getItem('REFRESH_TOKEN');
 
 // API 서버 기본 URL
-const API_SERVER_BASE_URL = 'http://127.0.0.1:5000';
+const API_SERVER_BASE_URL = 'https://flastagram-server.fly.dev';
 
 // API 서버 기능별 URL
 const RECOMMEND_API_URL = API_SERVER_BASE_URL + '/users/recommend-followers/';
